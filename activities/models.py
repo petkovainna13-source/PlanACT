@@ -17,7 +17,7 @@ class Activity(models.Model):
                                  , validators=[MinValueValidator(Decimal('0.00'))])
     environment = models.CharField(choices=ENVIRONMENT_CHOICES, max_length=8)
     distance = models.DecimalField(decimal_places=2, max_digits=8, null=False, blank=False
-                                   , validators=[MinValueValidator(Decimal('0.00')),
+                                   ,validators=[MinValueValidator(Decimal('0.00')),
                                                  MaxValueValidator(Decimal('40075.02'))])
     location = models.CharField(max_length=100, null=False, blank=False)
     dog_friendly = models.BooleanField(default=False)

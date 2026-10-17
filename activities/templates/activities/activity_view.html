@@ -1,10 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+{% for activity in activities %}
+    <h2>{{ activity.name }}</h2>
+    <p>{{ activity.description }}</p>
+    <p>{{ activity.budget }} €</p>
+    <p>{{ activity.location }}</p>
+    <p>{{ activity.distance }} km</p>
+    <p>Category: {{ activity.category.name }}</p>
+    <p>Environment: {{ activity.environment }}</p>
+    {%  if activity.dog_friendly %}
+        <p>Dog-friendly</p>
+    {% else %}
+        <p> Not dog-friendly</p>
+    {% endif %}
+{% empty %}
+    <p>No activities available yet.</p>
+{% endfor %}
+{% endblock %}
