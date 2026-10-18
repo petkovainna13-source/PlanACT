@@ -20,7 +20,7 @@ class Activity(models.Model):
                                    ,validators=[MinValueValidator(Decimal('0.00')),
                                                  MaxValueValidator(Decimal('40075.02'))])
     location = models.CharField(max_length=100, null=False, blank=False)
-    dog_friendly = models.BooleanField(default=False)
+    pet_friendly = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='activities')

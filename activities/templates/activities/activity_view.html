@@ -8,10 +8,10 @@
     <p>{{ activity.distance }} km</p>
     <p>Category: {{ activity.category.name }}</p>
     <p>Environment: {{ activity.environment }}</p>
-    {%  if activity.dog_friendly %}
-        <p>Dog-friendly</p>
+    {%  if activity.pet_friendly %}
+        <p>Pet-friendly</p>
     {% else %}
-        <p> Not dog-friendly</p>
+        <p> Not pet-friendly</p>
     {% endif %}
 {% empty %}
     <p>No activities available yet.</p>
