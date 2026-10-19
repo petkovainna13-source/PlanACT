@@ -13,6 +13,8 @@
     {% else %}
         <p> Not pet-friendly</p>
     {% endif %}
+    <a href="{% url 'activity_edit' activity.pk %}">Edit Activity</a>
+    <a href="{% url 'activity_details' activity.pk %}">Activity Details</a>
 {% empty %}
     <p>No activities available yet.</p>
 {% endfor %}

@@ -1,5 +1,6 @@
 from django import forms
 from activities.models import Activity
+from planact.mixins import DisabledFieldsMixin
 
 
 class ActivityBaseForm(forms.ModelForm):
@@ -40,5 +41,5 @@ class ActivityCreateForm(ActivityBaseForm):
 class ActivityEditForm(ActivityBaseForm):
     ...
 
-class ActivityDeleteForm(ActivityBaseForm):
+class ActivityDeleteForm(DisabledFieldsMixin,ActivityBaseForm):
     ...

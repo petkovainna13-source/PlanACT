@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>{{ activity.name }}</h2>
+    <p>{{ activity.description }}</p>
+    <p>{{ activity.budget }} €</p>
+    <p>{{ activity.location }}</p>
+    <p>{{ activity.distance }} km</p>
+    <p>Category: {{ activity.category.name }}</p>
+    <p>Environment: {{ activity.environment }}</p>
+    {%  if activity.pet_friendly %}
+        <p>Pet-friendly</p>
+    {% else %}
+        <p> Not pet-friendly</p>
+    {% endif %}
+    <h3>Vibes</h3>
+    {% for vibe in activity.vibes.all %}
+        <p>{{ vibe.name }}</p>
+    {% empty %}
+        No vibes added.
+    {% endfor %}
+    <a href="{% url 'activity_edit' activity.pk %}">Edit Activity</a>
+    <a href="{% url 'activity_delete' activity.pk %}">Delete Activity</a>
+{% endblock %}
