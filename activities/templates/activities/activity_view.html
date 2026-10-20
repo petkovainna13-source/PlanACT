@@ -1,7 +1,15 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 {% for activity in activities %}
     <h2>{{ activity.name }}</h2>
+    {% if activity.image %}
+        <img src='{{ activity.image.url }}' alt="{{ activity.name }}">
+    {% elif activity.default_image%}
+        <img src="{% static 'images/defaults/'|add:activity.default_image %}" alt="{{ activity.name }}">
+    {% else %}
+        <img src="{% static 'images/placeholder.jpg' %}" alt="{{ activity.name }}">
+    {% endif %}
     <p>{{ activity.description }}</p>
     <p>{{ activity.budget }} €</p>
     <p>{{ activity.location }}</p>

@@ -14,7 +14,7 @@ def activity_view(request:HttpRequest):
                   context=context)
 
 def activity_create_view(request:HttpRequest):
-    form = ActivityCreateForm(request.POST or None)
+    form = ActivityCreateForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         form.save()
         return redirect('activities')
@@ -26,7 +26,7 @@ def activity_create_view(request:HttpRequest):
 
 def activity_edit_view(request:HttpRequest, activity_id):
     activity = get_object_or_404(Activity, id=activity_id)
-    form=ActivityEditForm(request.POST or None, instance=activity)
+    form=ActivityEditForm(request.POST or None,request.FILES or None, instance=activity)
     if form.is_valid():
         form.save()
         return redirect('activities')
