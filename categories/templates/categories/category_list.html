@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Explore Categories</h1>
+
+    {% for category in category_list %}
+        <p>{{ category.name }}</p>
+        <p>{{ category.description }}</p>
+    {% empty %}
+        <p>No categories available yet.</p>
+    {% endfor %}
+{% endblock %}
