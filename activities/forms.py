@@ -11,8 +11,8 @@ class ActivityBaseForm(forms.ModelForm):
                                         coerce=lambda value: value == 'True')
 
     class Meta:
-        model = Activity
-        fields = '__all__'
+        model=Activity
+        fields='__all__'
         labels={
             'name':'Activity Title',
             'description':'Brief Description',

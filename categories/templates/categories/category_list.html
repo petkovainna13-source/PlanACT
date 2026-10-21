@@ -6,6 +6,8 @@
     {% for category in category_list %}
         <p>{{ category.name }}</p>
         <p>{{ category.description }}</p>
+        <a href="{% url 'category_edit' category.pk %}">Edit Category</a>
+        <a href="{% url 'category_delete' category.pk %}">Delete Category</a>
     {% empty %}
         <p>No categories available yet.</p>
     {% endfor %}

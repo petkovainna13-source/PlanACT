@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Delete {{ category.name }}</h2>
+    <form method="POST">
+        {%  csrf_token %}
+        <p>Note: Categories assigned to existing activities cannot be deleted.</p>
+        <p>Are you sure you want to delete the category "{{ category.name }}" forever?</p>
+        <div>
+            <button type="submit">YES</button>
+        </div>
+    </form>
+    <a href="{% url 'category_list'%}">Cancel</a>
+{% endblock %}
