@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Delete {{ vibe.name }}</h2>
+    <form method="POST">
+        {%  csrf_token %}
+        <p>Are you sure you want to delete the vibe "{{ vibe.name }}" forever?</p>
+        <div>
+            <button type="submit">YES</button>
+        </div>
+    </form>
+    <a href="{% url 'vibe_list'%}">Cancel</a>
+{% endblock %}

@@ -3,7 +3,8 @@ from decimal import Decimal
 from django.core.validators import MinValueValidator,MaxValueValidator
 from django.db import models
 
-from categories.models import Category,Vibe
+from categories.models import Category
+from vibes.models import Vibe
 
 
 class Activity(models.Model):

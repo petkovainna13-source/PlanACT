@@ -1,7 +1,8 @@
 from django.contrib import admin
 
 from activities.models import Activity
-from categories.models import Vibe, Category
+from categories.models import Category
+from vibes.models import Vibe
 
 
 # Register your models here.

@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('activities/', include('activities.urls')),
     path('categories/', include('categories.urls')),
+    path('vibes/', include('vibes.urls')),
 ]
 
 if settings.DEBUG:

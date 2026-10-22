@@ -32,7 +32,8 @@ ALLOWED_HOSTS = []
 PROJECT_APPS=[
     'activities',
     'categories',
-    'planner'
+    'planner',
+    'vibes'
 ]
 INSTALLED_APPS = [
     'django.contrib.admin',

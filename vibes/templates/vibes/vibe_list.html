@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Explore Vibes</h1>
+
+    {% for vibe in vibe_list %}
+        <p>{{ vibe.name }}</p>
+        <a href="{% url 'vibe_edit' vibe.pk %}">Edit Vibe</a>
+        <a href="{% url 'vibe_delete' vibe.pk %}">Delete Vibe</a>
+    {% empty %}
+        <p>No vibes available yet.</p>
+    {% endfor %}
+{% endblock %}
