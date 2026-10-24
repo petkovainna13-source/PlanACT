@@ -3,6 +3,7 @@ import random
 from django.http import HttpRequest
 from django.shortcuts import render
 
+from activities.helpers import filter_activities
 from activities.models import Activity
 from planner.forms import ActivityPickerForm
 
@@ -16,26 +17,7 @@ def random_activity_view(request:HttpRequest):
     has_activities=Activity.objects.exists()
     if request.GET.get('pick')=='1' and form.is_valid():
         try:
-            budget = form.cleaned_data['budget']
-            distance = form.cleaned_data['distance']
-            pet_friendly = form.cleaned_data['pet_friendly']
-            environment = form.cleaned_data['environment']
-
-            if budget is not None:
-                activities = activities.filter(budget__lte=budget)
-
-            if distance is not None:
-                activities = activities.filter(distance__lte=distance)
-
-            if pet_friendly =="yes":
-
-                activities = activities.filter(pet_friendly=True)
-            elif pet_friendly =="no":
-                activities = activities.filter(pet_friendly=False)
-
-            if environment :
-                activities = activities.filter(environment=environment)
-
+            activities = filter_activities(activities, form.cleaned_data)
             selected_activity = random.choice(activities)
 
         except IndexError:

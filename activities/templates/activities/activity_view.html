@@ -1,29 +1,40 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-{% for activity in activities %}
-    <h2>{{ activity.name }}</h2>
-    {% if activity.image %}
-        <img src='{{ activity.image.url }}' alt="{{ activity.name }}">
-    {% elif activity.default_image%}
-        <img src="{% static 'images/defaults/'|add:activity.default_image %}" alt="{{ activity.name }}">
-    {% else %}
-        <img src="{% static 'images/placeholder.jpg' %}" alt="{{ activity.name }}">
-    {% endif %}
-    <p>{{ activity.description }}</p>
-    <p>{{ activity.budget }} €</p>
-    <p>{{ activity.location }}</p>
-    <p>{{ activity.distance }} km</p>
-    <p>Category: {{ activity.category.name }}</p>
-    <p>Environment: {{ activity.environment }}</p>
-    {%  if activity.pet_friendly %}
-        <p>Pet-friendly</p>
-    {% else %}
-        <p> Not pet-friendly</p>
-    {% endif %}
-    <a href="{% url 'activity_edit' activity.pk %}">Edit Activity</a>
-    <a href="{% url 'activity_details' activity.pk %}">Activity Details</a>
-{% empty %}
-    <p>No activities available yet.</p>
-{% endfor %}
+    <form method='get'>
+    {{ form.as_p }}
+    <button type="submit">Apply Filters</button>
+    </form>
+    {% for activity in activities %}
+        <h2>{{ activity.name }}</h2>
+        {% if activity.image %}
+            <img src='{{ activity.image.url }}' alt="{{ activity.name }}">
+        {% elif activity.default_image%}
+            <img src="{% static 'images/defaults/'|add:activity.default_image %}" alt="{{ activity.name }}">
+        {% else %}
+            <img src="{% static 'images/placeholder.jpg' %}" alt="{{ activity.name }}">
+        {% endif %}
+        <p>{{ activity.description }}</p>
+        <p>{{ activity.budget }} €</p>
+        <p>{{ activity.location }}</p>
+        <p>{{ activity.distance }} km</p>
+        <p>Category: {{ activity.category.name }}</p>
+        <p>Environment: {{ activity.environment }}</p>
+        {%  if activity.pet_friendly %}
+            <p>Pet-friendly</p>
+        {% else %}
+            <p> Not pet-friendly</p>
+        {% endif %}
+        <a href="{% url 'activity_edit' activity.pk %}">Edit Activity</a>
+        <a href="{% url 'activity_details' activity.pk %}">Activity Details</a>
+    {% empty %}
+        {% if form.is_bound and not form.is_valid %}
+            <p>Please correct the errors above to see your filtered activities.</p>
+        {% elif has_activities %}
+             <p>No activities match your filters. Try changing them.</p>
+        {% else %}
+             <p>No activities available yet.</p>
+             <a href="{% url 'activity_create' %}">Add your first activity</a>
+        {% endif %}
+    {% endfor %}
 {% endblock %}

@@ -43,3 +43,58 @@ class ActivityEditForm(ActivityBaseForm):
 
 class ActivityDeleteForm(DisabledFieldsMixin,ActivityBaseForm):
     ...
+
+class ActivityFilterBaseForm(forms.Form):
+    max_budget=forms.DecimalField(max_digits=10,
+                              decimal_places=2,
+                              required=False,
+                              min_value=0,
+                              label="Maximum budget (€)",
+                              widget=forms.NumberInput(attrs={'placeholder':'Any budget','step':'0.01'}))
+    distance=forms.DecimalField(max_digits=10,
+                                decimal_places=2,
+                                required=False,
+                                min_value=0,
+                                max_value=40075.02,
+                                label="Maximum distance (km)",
+                                widget=forms.NumberInput(attrs={'placeholder':'Any distance','step':'0.01'}))
+    environment=forms.ChoiceField(choices=(("",'Any environment'),
+                                           ('Outdoors','Outdoors'),
+                                           ('Indoors','Indoors')),
+                                  required=False,
+                                  widget=forms.Select,
+                                  label="Environment (Outdoor, Indoors or Any)")
+    pet_friendly=forms.ChoiceField(choices=(("",'Any'),('yes','Yes'),('no','No')),
+                                  required=False,
+                                  widget=forms.Select,
+                                  label="Pet-friendly")
+
+class ActivityFilterForm(ActivityFilterBaseForm):
+    min_budget = forms.DecimalField(max_digits=10,
+                                    decimal_places=2,
+                                    required=False,
+                                    min_value=0,
+                                    label="Minimum budget (€)",
+                                    widget=forms.NumberInput(attrs={'placeholder': 'Any budget', 'step': '0.01'}))
+
+    sort=forms.ChoiceField(choices=(("","Default order"),
+                                    ('name','Name A-Z'),
+                                    ('-name','Name Z-A'),
+                                    ("budget","Budget Low to High"),
+                                    ('-budget','Budget High to Low'),
+                                    ('distance','Distance to Nearest First'),
+                                    ('-distance','Distance to Farthest First'),
+                                    ),
+                           required=False,
+                           widget=forms.Select,
+                           label='Sort by')
+
+    def clean(self):
+        cleaned_data=super().clean()
+        min_budget=cleaned_data.get('min_budget')
+        max_budget=cleaned_data.get('max_budget')
+
+        if min_budget is not None and max_budget is not None:
+            if max_budget < min_budget:
+                raise forms.ValidationError("Minimum budget cannot be more than maximum budget")
+        return cleaned_data
