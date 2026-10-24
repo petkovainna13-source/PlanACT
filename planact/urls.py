@@ -25,6 +25,7 @@ urlpatterns = [
     path('activities/', include('activities.urls')),
     path('categories/', include('categories.urls')),
     path('vibes/', include('vibes.urls')),
+    path('planner/', include('planner.urls')),
 ]
 
 if settings.DEBUG:

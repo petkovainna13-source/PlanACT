@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    {% if selected_activity %}
+        <h2>{{ selected_activity.name }}</h2>
+        {% if selected_activity.image %}
+            <img src='{{ selected_activity.image.url }}' alt="{{ selected_activity.name }}">
+        {% elif selected_activity.default_image%}
+            <img src="{% static 'images/defaults/'|add:selected_activity.default_image %}" alt="{{ selected_activity.name }}">
+        {% else %}
+            <img src="{% static 'images/placeholder.jpg' %}" alt="{{ selected_activity.name }}">
+        {% endif %}
+        <p>{{ selected_activity.description }}</p>
+        <p>{{ selected_activity.budget }} €</p>
+        <p>{{ selected_activity.location }}</p>
+        <p>{{ selected_activity.distance }} km</p>
+        <p>Category: {{ selected_activity.category.name }}</p>
+        <p>Environment: {{ selected_activity.environment }}</p>
+        {%  if selected_activity.pet_friendly %}
+            <p>Pet-friendly</p>
+        {% else %}
+            <p> Not pet-friendly</p>
+        {% endif %}
+        <a href="{% url 'activity_edit' selected_activity.pk %}">Edit Activity</a>
+        <a href="{% url 'activity_details' selected_activity.pk %}">Activity Details</a>
+    {% elif has_picked %}
+        {% if has_activities %}
+            <p>No activities match your preferences. Try changing your filters.</p>
+        {% else %}
+            <p>No activities available yet.</p>
+            <a href="{% url 'activity_create' %}">Add an Activity</a>
+        {% endif %}
+    {% else %}
+        <h2>Not sure what to plan?</h2>
+        <p>Let the fate choose your next adventure!</p>
+    {% endif %}
+    <form method="get">
+        {{ form.as_p }}
+        <button type="submit" name="pick" value="1">
+        {% if not has_picked %} Pick an Activity
+        {% else %} Pick Again
+        {% endif %}
+        </button>
+    </form>
+
+{% endblock %}
