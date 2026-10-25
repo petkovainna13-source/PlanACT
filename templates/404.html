@@ -1,10 +1,33 @@
+
 {% extends 'base.html' %}
 
 {% block content %}
-    <section class="error-page">
-        <h1>404 - OOOPS...Adventure Not Found.</h1>
-        <p>Looks like this plan took a wrong turn!</p>
-        <p>Let's get you back on track.</p>
-        <a href="{% url 'activities' %}">Explore Activities</a>
-    </section>
+
+<section class="error-page">
+
+    <div class="error-illustration">
+        <span class="error-compass">🧭</span>
+        <span class="error-number">404</span>
+    </div>
+
+    <span class="eyebrow">A LITTLE DETOUR</span>
+
+    <h1>Oops... Adventure Not Found!</h1>
+
+    <p class="error-message">
+        Looks like this plan took a wrong turn!
+        <br>
+        Don't worry, every adventure has a few detours.
+    </p>
+
+    <p class="error-subtext">
+        Let's get you back on track.
+    </p>
+
+    <a href="{% url 'activities' %}" class="btn btn-primary">
+        Explore Activities
+    </a>
+
+</section>
+
 {% endblock %}

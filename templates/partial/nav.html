@@ -1,9 +1,12 @@
-        <nav>
-            <a href="/activities/">Explore Activities</a>
-            <a href="/activities/create/">Create Activity</a>
-            <a href="/categories/">Explore Categories</a>
-            <a href="/categories/create/">Create Category</a>
-            <a href="/vibes/">Explore Vibes</a>
-            <a href="/vibes/create/">Create Vibe</a>
-            <a href="/planner">Pick a random activity</a>
-        </nav>
+<nav class="main-nav" aria-label="Main navigation">
+    <a href="{% url 'activities' %}">Activities</a>
+    <a href="/activities/create/">+ Activity</a>
+
+    <a href="/categories/">Categories</a>
+    <a href="/categories/create/">+ Category</a>
+
+    <a href="/vibes/">Vibes</a>
+    <a href="/vibes/create/">+ Vibe</a>
+
+    <a href="/planner/" class="nav-highlight">🎲 Surprise Me!</a>
+</nav>

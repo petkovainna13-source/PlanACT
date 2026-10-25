@@ -1,14 +1,84 @@
+
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Explore Categories</h1>
 
-    {% for category in category_list %}
-        <p>{{ category.name }}</p>
-        <p>{{ category.description }}</p>
-        <a href="{% url 'category_edit' category.pk %}">Edit Category</a>
-        <a href="{% url 'category_delete' category.pk %}">Delete Category</a>
-    {% empty %}
-        <p>No categories available yet.</p>
-    {% endfor %}
+<section class="page-intro">
+    <span class="eyebrow">FIND YOUR KIND OF FUN</span>
+    <h1>Explore Categories</h1>
+    <p>
+        Every adventure starts somewhere.
+        Discover and organize activities by category.
+    </p>
+</section>
+
+<section class="collection-section">
+
+    <div class="collection-heading">
+        <div>
+            <h2>Your Categories</h2>
+            <p>Keep your adventures organized.</p>
+        </div>
+
+        <a href="{% url 'category_create' %}"
+           class="btn btn-primary">
+            + New Category
+        </a>
+    </div>
+
+    <div class="collection-grid">
+
+        {% for category in category_list %}
+
+            <article class="collection-card">
+
+                <div class="collection-card-icon">✦</div>
+
+                <h3>{{ category.name }}</h3>
+
+                <p class="collection-description">
+                    {% if category.description %}
+                        {{ category.description }}
+                    {% else %}
+                        No description added yet.
+                    {% endif %}
+                </p>
+
+                <div class="collection-card-actions">
+
+                    <a href="{% url 'category_edit' category.pk %}"
+                       class="btn btn-outline">
+                        Edit
+                    </a>
+
+                    <a href="{% url 'category_delete' category.pk %}"
+                       class="btn btn-secondary">
+                        Delete
+                    </a>
+
+                </div>
+
+            </article>
+
+        {% empty %}
+
+            <div class="empty-state">
+                <h3>No Categories Yet</h3>
+                <p>
+                    Create your first category to start organizing
+                    your adventures.
+                </p>
+
+                <a href="{% url 'category_create' %}"
+                   class="btn btn-primary">
+                    + Create Category
+                </a>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
 {% endblock %}

@@ -1,46 +1,179 @@
+
 {% extends 'base.html' %}
 {% load static %}
+
 {% block content %}
-    {% if selected_activity %}
-        <h2>{{ selected_activity.name }}</h2>
-        {% if selected_activity.image %}
-            <img src='{{ selected_activity.image.url }}' alt="{{ selected_activity.name }}">
-        {% elif selected_activity.default_image%}
-            <img src="{% static 'images/defaults/'|add:selected_activity.default_image %}" alt="{{ selected_activity.name }}">
+
+<section class="page-intro picker-intro">
+    <span class="eyebrow">LET ADVENTURE FIND YOU</span>
+    <h1>Can't Decide? Let's Pick!</h1>
+    <p>
+        Tell us what you're in the mood for,
+        and let PlanACT surprise you with your next adventure.
+    </p>
+</section>
+
+<section class="picker-layout">
+
+    <div class="picker-filter-card">
+
+        <div class="picker-section-heading">
+            <span class="picker-step">01</span>
+            <div>
+                <h2>Your Preferences</h2>
+                <p>A few details help us find your perfect activity.</p>
+            </div>
+        </div>
+
+        <form method="get" class="picker-form">
+
+            {{ form.as_p }}
+
+            <button type="submit"
+                    name="pick"
+                    value="1"
+                    class="btn btn-primary picker-button">
+
+                {% if not has_picked %}
+                    🎲 Surprise Me!
+                {% else %}
+                    🎲 Pick Another Adventure
+                {% endif %}
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <div class="picker-result-area">
+
+        <div class="picker-section-heading">
+            <span class="picker-step">02</span>
+            <div>
+                <h2>Your Adventure</h2>
+                <p>Let's see where the day takes you.</p>
+            </div>
+        </div>
+
+        {% if selected_activity %}
+
+            <article class="picker-result-card">
+
+                <div class="picker-result-image">
+
+                    {% if selected_activity.image %}
+                        <img src="{{ selected_activity.image.url }}"
+                             alt="{{ selected_activity.name }}">
+                    {% elif selected_activity.default_image %}
+                        <img src="{% static 'images/defaults/'|add:selected_activity.default_image %}"
+                             alt="{{ selected_activity.name }}">
+                    {% else %}
+                        <img src="{% static 'images/placeholder.jpg' %}"
+                             alt="{{ selected_activity.name }}">
+                    {% endif %}
+
+                </div>
+
+                <div class="picker-result-content">
+
+                    <span class="eyebrow">YOUR PICK IS...</span>
+
+                    <h3>{{ selected_activity.name }}</h3>
+
+                    <p class="picker-result-description">
+                        {{ selected_activity.description }}
+                    </p>
+
+                    <div class="picker-result-tags">
+                        <span>💲 {{ selected_activity.budget }} €</span>
+                        <span>📍 {{ selected_activity.location }}</span>
+                        <span>↗ {{ selected_activity.distance }} km</span>
+                        <span>{{ selected_activity.category.name }}</span>
+                        <span>{{ selected_activity.environment }}</span>
+
+                        {% if selected_activity.pet_friendly %}
+                            <span>🐶🐱 Pet-friendly</span>
+                        {% else %}
+                            <span>🚫🐕Not pet-friendly</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="picker-result-actions">
+
+                        <a href="{% url 'activity_details' selected_activity.pk %}"
+                           class="btn btn-primary">
+                            Explore This Activity
+                        </a>
+
+                        <a href="{% url 'activity_edit' selected_activity.pk %}"
+                           class="btn btn-outline">
+                            Edit Activity
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        {% elif has_picked %}
+
+            <div class="picker-empty-state">
+
+                {% if has_activities %}
+
+                    <span class="picker-empty-icon">🔎</span>
+
+                    <h3>No Match This Time</h3>
+
+                    <p>
+                        No activities match your preferences.
+                        Try changing your filters and pick again!
+                    </p>
+
+                {% else %}
+
+                    <span class="picker-empty-icon">🌱</span>
+
+                    <h3>Your Adventure Collection Is Empty</h3>
+
+                    <p>
+                        Add your first activity and let PlanACT
+                        choose an adventure for you.
+                    </p>
+
+                    <a href="{% url 'activity_create' %}"
+                       class="btn btn-primary">
+                        + Add an Activity
+                    </a>
+
+                {% endif %}
+
+            </div>
+
         {% else %}
-            <img src="{% static 'images/placeholder.jpg' %}" alt="{{ selected_activity.name }}">
+
+            <div class="picker-welcome-state">
+
+                <div class="picker-dice">🎲</div>
+
+                <span class="eyebrow">READY WHEN YOU ARE</span>
+
+                <h3>A Little Surprise Awaits</h3>
+
+                <p>
+                    Set your preferences and press
+                    <strong>Surprise Me!</strong>
+                    to discover your next adventure.
+                </p>
+
+            </div>
+
         {% endif %}
-        <p>{{ selected_activity.description }}</p>
-        <p>{{ selected_activity.budget }} €</p>
-        <p>{{ selected_activity.location }}</p>
-        <p>{{ selected_activity.distance }} km</p>
-        <p>Category: {{ selected_activity.category.name }}</p>
-        <p>Environment: {{ selected_activity.environment }}</p>
-        {%  if selected_activity.pet_friendly %}
-            <p>Pet-friendly</p>
-        {% else %}
-            <p> Not pet-friendly</p>
-        {% endif %}
-        <a href="{% url 'activity_edit' selected_activity.pk %}">Edit Activity</a>
-        <a href="{% url 'activity_details' selected_activity.pk %}">Activity Details</a>
-    {% elif has_picked %}
-        {% if has_activities %}
-            <p>No activities match your preferences. Try changing your filters.</p>
-        {% else %}
-            <p>No activities available yet.</p>
-            <a href="{% url 'activity_create' %}">Add an Activity</a>
-        {% endif %}
-    {% else %}
-        <h2>Not sure what to plan?</h2>
-        <p>Let the fate choose your next adventure!</p>
-    {% endif %}
-    <form method="get">
-        {{ form.as_p }}
-        <button type="submit" name="pick" value="1">
-        {% if not has_picked %} Pick an Activity
-        {% else %} Pick Again
-        {% endif %}
-        </button>
-    </form>
+
+    </div>
+
+</section>
 
 {% endblock %}

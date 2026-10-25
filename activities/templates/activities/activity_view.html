@@ -1,54 +1,164 @@
 {% extends 'base.html' %}
 {% load activity_extras %}
 {% load static %}
-{% block content %}
-    
-    {% featured_activity as featured %}
-        <section class="featured-activity">
-            <h2>🌟 Featured Adventure</h2>
-            {% if featured %}
-                <h3>{{ featured.name }}</h3>
-                <p>Budget: €{{ featured.budget }} — {{ featured.budget|budget_label }}</p>
-                <p>Distance: {{ featured.distance }} km</p>
-            {% else %}
-                <p>No adventures yet. Create your first activity!</p>
-            {% endif %}
-        </section>
 
-    <form method='get'>
-    {{ form.as_p }}
-    <button type="submit">Apply Filters</button>
+{% block content %}
+
+<section class="page-intro">
+    <span class="eyebrow">DISCOVER SOMETHING NEW</span>
+    <h1>Explore Your Next Adventure</h1>
+    <p>Find an activity that fits your budget, your mood, and your plans.</p>
+</section>
+
+{% featured_activity as featured %}
+
+<section class="featured-activity">
+    <div class="section-heading">
+        <span class="eyebrow">A LITTLE INSPIRATION</span>
+        <h2>🌟 Featured Adventure</h2>
+    </div>
+
+    {% if featured %}
+        <div class="featured-content">
+            <div>
+                <h3>{{ featured.name }}</h3>
+                <p class="featured-description">
+                    Your next adventure could be just around the corner.
+                </p>
+
+                <div class="activity-meta">
+                    <span class="info-pill">
+                        €{{ featured.budget }}
+                    </span>
+                    <span class="info-pill">
+                        {{ featured.budget|budget_label }}
+                    </span>
+                    <span class="info-pill">
+                        📍 {{ featured.distance }} km
+                    </span>
+                </div>
+
+                <a class="btn btn-primary"
+                   href="{% url 'activity_details' featured.pk %}">
+                    Explore This Activity
+                </a>
+            </div>
+        </div>
+    {% else %}
+        <p>No adventures yet. Create your first activity!</p>
+        <a class="btn btn-primary" href="{% url 'activity_create' %}">
+            Create Activity
+        </a>
+    {% endif %}
+</section>
+
+<section class="filter-section">
+    <div class="section-heading">
+        <span class="eyebrow">MAKE IT YOUR OWN</span>
+        <h2>Find Your Perfect Activity</h2>
+        <p>Adjust your preferences and discover what suits you.</p>
+    </div>
+
+    <form method="get" class="filter-form">
+        <div class="filter-fields">
+            {{ form.as_p }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Apply Filters
+        </button>
+
+        <a href="{% url 'activities' %}" class="btn btn-secondary">
+            Clear Filters
+        </a>
     </form>
-    {% for activity in activities %}
-        <h2>{{ activity.name }}</h2>
-        {% if activity.image %}
-            <img src='{{ activity.image.url }}' alt="{{ activity.name }}">
-        {% elif activity.default_image%}
-            <img src="{% static 'images/defaults/'|add:activity.default_image %}" alt="{{ activity.name }}">
-        {% else %}
-            <img src="{% static 'images/placeholder.jpg' %}" alt="{{ activity.name }}">
-        {% endif %}
-        <p>{{ activity.description }}</p>
-        <p>{{ activity.budget }} €</p>
-        <p>{{ activity.location }}</p>
-        <p>{{ activity.distance }} km</p>
-        <p>Category: {{ activity.category.name }}</p>
-        <p>Environment: {{ activity.environment }}</p>
-        {%  if activity.pet_friendly %}
-            <p>Pet-friendly</p>
-        {% else %}
-            <p> Not pet-friendly</p>
-        {% endif %}
-        <a href="{% url 'activity_edit' activity.pk %}">Edit Activity</a>
-        <a href="{% url 'activity_details' activity.pk %}">Activity Details</a>
-    {% empty %}
-        {% if form.is_bound and not form.is_valid %}
-            <p>Please correct the errors above to see your filtered activities.</p>
-        {% elif has_activities %}
-             <p>No activities match your filters. Try changing them.</p>
-        {% else %}
-             <p>No activities available yet.</p>
-             <a href="{% url 'activity_create' %}">Add your first activity</a>
-        {% endif %}
-    {% endfor %}
+</section>
+
+<section class="activities-section">
+    <div class="section-heading">
+        <span class="eyebrow">YOUR OPTIONS</span>
+        <h2>Activities to Explore</h2>
+    </div>
+
+    <div class="activity-grid">
+        {% for activity in activities %}
+            <article class="activity-card">
+
+                <div class="activity-card-image">
+                    {% if activity.image %}
+                        <img src="{{ activity.image.url }}"
+                             alt="{{ activity.name }}">
+                    {% elif activity.default_image %}
+                        <img src="{% static 'images/defaults/'|add:activity.default_image %}"
+                             alt="{{ activity.name }}">
+                    {% else %}
+                        <img src="{% static 'images/placeholder.jpg' %}"
+                             alt="{{ activity.name }}">
+                    {% endif %}
+                </div>
+
+                <div class="activity-card-body">
+                    <div class="activity-card-top">
+                        <span class="category-label">
+                            {{ activity.category.name }}
+                        </span>
+                        <span class="budget-label">
+                            {{ activity.budget|budget_label }}
+                        </span>
+                    </div>
+
+                    <h3>{{ activity.name }}</h3>
+
+                    <p class="activity-description">
+                        {{ activity.description|truncatewords:22 }}
+                    </p>
+
+                    <div class="activity-meta">
+                        <span>💲 €{{ activity.budget }}</span>
+                        <span>📍 {{ activity.distance }} km</span>
+                        <span>🌍 {{ activity.location }}</span>
+                        <span>{{ activity.environment }}</span>
+
+                        {% if activity.pet_friendly %}
+                            <span>🐶🐱 Pet-friendly</span>
+                        {% else %}
+                            <span>🚫🐕 No pets</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="card-actions">
+                        <a class="btn btn-primary"
+                           href="{% url 'activity_details' activity.pk %}">
+                            View Details
+                        </a>
+
+                        <a class="btn btn-outline"
+                           href="{% url 'activity_edit' activity.pk %}">
+                            Edit
+                        </a>
+                    </div>
+                </div>
+
+            </article>
+        {% empty %}
+            <div class="empty-state">
+                {% if form.is_bound and not form.is_valid %}
+                    <h3>Please check your filters</h3>
+                    <p>Correct the errors above to see your activities.</p>
+                {% elif has_activities %}
+                    <h3>No matching adventures</h3>
+                    <p>Try adjusting your preferences to discover more activities.</p>
+                {% else %}
+                    <h3>Your adventure collection is waiting!</h3>
+                    <p>No activities available yet. Add your first one.</p>
+                    <a class="btn btn-primary"
+                       href="{% url 'activity_create' %}">
+                        Add Your First Activity
+                    </a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
 {% endblock %}

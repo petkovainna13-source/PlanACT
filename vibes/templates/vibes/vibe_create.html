@@ -1,11 +1,37 @@
+
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Create Vibe</h1>
 
-   <form method="post" >
+<section class="page-intro">
+    <span class="eyebrow">SET THE MOOD</span>
+    <h1>Create a Vibe</h1>
+    <p>Every great adventure starts with a feeling.</p>
+</section>
+
+<section class="activity-form-card">
+
+    <div class="form-card-header">
+        <h2>Vibe Details</h2>
+        <p>Give your new vibe a name that captures the mood.</p>
+    </div>
+
+    <form method="post" class="activity-form">
         {% csrf_token %}
+
         {{ form.as_p }}
-        <button type="submit">Create Vibe</button>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                + Create Vibe
+            </button>
+
+            <a href="{% url 'vibe_list' %}" class="btn btn-secondary">
+                Cancel
+            </a>
+        </div>
     </form>
+
+</section>
+
 {% endblock %}

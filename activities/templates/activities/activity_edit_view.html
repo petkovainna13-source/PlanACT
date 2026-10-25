@@ -1,11 +1,41 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Edit Activity</h1>
 
-    <form method="post" enctype="multipart/form-data">
+<section class="page-intro">
+    <span class="eyebrow">MAKE IT EVEN BETTER</span>
+    <h1>Edit Adventure</h1>
+    <p>Update the details of your activity and keep your adventures up to date.</p>
+</section>
+
+<section class="activity-form-card">
+
+    <div class="form-card-header">
+        <h2>Update Activity Details</h2>
+        <p>Make your changes below, then save when you're ready.</p>
+    </div>
+
+    <form method="post"
+          enctype="multipart/form-data"
+          class="activity-form">
+
         {% csrf_token %}
+
         {{ form.as_p }}
-        <button type="submit">Save Changes</button>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                Save Changes
+            </button>
+
+            <a href="{% url 'activities' %}"
+                class="btn btn-secondary">
+                Cancel
+            </a>
+        </div>
+
     </form>
+
+</section>
+
 {% endblock %}

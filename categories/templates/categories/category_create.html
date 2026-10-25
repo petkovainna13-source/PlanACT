@@ -1,11 +1,37 @@
+
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Create Category</h1>
 
-   <form method="post" >
+<section class="page-intro">
+    <span class="eyebrow">ORGANIZE YOUR ADVENTURES</span>
+    <h1>Create a Category</h1>
+    <p>Give your activities a home by creating a new category.</p>
+</section>
+
+<section class="activity-form-card">
+
+    <div class="form-card-header">
+        <h2>Category Details</h2>
+        <p>Choose a name and add a description for your category.</p>
+    </div>
+
+    <form method="post" class="activity-form">
         {% csrf_token %}
+
         {{ form.as_p }}
-        <button type="submit">Create Category</button>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                + Create Category
+            </button>
+
+            <a href="{% url 'category_list' %}" class="btn btn-secondary">
+                Cancel
+            </a>
+        </div>
     </form>
+
+</section>
+
 {% endblock %}

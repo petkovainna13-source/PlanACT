@@ -1,13 +1,46 @@
+
 {% extends 'base.html' %}
+
 {% block content %}
-    <h2>Delete {{ activity.name }}</h2>
-    <form method="POST">
-        {%  csrf_token %}
+
+<section class="page-intro">
+    <span class="eyebrow">ONE LAST CHECK</span>
+    <h1>Delete Adventure</h1>
+    <p>Are you sure you're ready to say goodbye to this activity?</p>
+</section>
+
+<section class="delete-card">
+
+    <div class="delete-warning-icon">!</div>
+
+    <h2>Delete "{{ activity.name }}"?</h2>
+
+    <p class="delete-description">
+        This action cannot be undone.
+        The activity and its details will be permanently removed.
+    </p>
+
+    <div class="delete-highlight">
+        <strong>{{ activity.name }}</strong>
+        <span>{{ activity.location }}</span>
+    </div>
+
+    <form method="post" class="delete-form">
+        {% csrf_token %}
+
         {{ form.as_p }}
-        <p>Are you sure you want to delete the activity "{{ activity.name }}" forever?</p>
-        <div>
-            <button type="submit">YES</button>
+
+        <div class="delete-actions">
+            <button type="submit" class="btn btn-danger">
+                Yes, Delete Activity
+            </button>
+
+            <a href="{% url 'activities' %}" class="btn btn-secondary">
+                No, Keep It
+            </a>
         </div>
     </form>
-    <a href="{% url 'activity_details' activity.pk %}">Cancel</a>
+
+</section>
+
 {% endblock %}

@@ -1,13 +1,80 @@
+
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Explore Vibes</h1>
 
-    {% for vibe in vibe_list %}
-        <p>{{ vibe.name }}</p>
-        <a href="{% url 'vibe_edit' vibe.pk %}">Edit Vibe</a>
-        <a href="{% url 'vibe_delete' vibe.pk %}">Delete Vibe</a>
-    {% empty %}
-        <p>No vibes available yet.</p>
-    {% endfor %}
+<section class="page-intro">
+    <span class="eyebrow">FOLLOW THE FEELING</span>
+    <h1>Explore Vibes</h1>
+    <p>
+        Every adventure has a mood.
+        Create and manage the vibes that inspire your next plan.
+    </p>
+</section>
+
+<section class="collection-section">
+
+    <div class="collection-heading">
+        <div>
+            <h2>Your Vibes</h2>
+            <p>Find the feeling behind every adventure.</p>
+        </div>
+
+        <a href="{% url 'vibe_create' %}"
+           class="btn btn-primary">
+            + New Vibe
+        </a>
+    </div>
+
+    <div class="collection-grid">
+
+        {% for vibe in vibe_list %}
+
+            <article class="collection-card">
+
+                <div class="collection-card-icon">✨</div>
+
+                <h3>{{ vibe.name }}</h3>
+
+                <p class="collection-description">
+                    A little inspiration for your next adventure.
+                </p>
+
+                <div class="collection-card-actions">
+
+                    <a href="{% url 'vibe_edit' vibe.pk %}"
+                       class="btn btn-outline">
+                        Edit
+                    </a>
+
+                    <a href="{% url 'vibe_delete' vibe.pk %}"
+                       class="btn btn-secondary">
+                        Delete
+                    </a>
+
+                </div>
+
+            </article>
+
+        {% empty %}
+
+            <div class="empty-state">
+                <h3>No Vibes Yet</h3>
+                <p>
+                    Create your first vibe and start giving
+                    your activities a little personality.
+                </p>
+
+                <a href="{% url 'vibe_create' %}"
+                   class="btn btn-primary">
+                    + Create Vibe
+                </a>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
 {% endblock %}

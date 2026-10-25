@@ -1,23 +1,100 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load activity_extras %}
+
 {% block content %}
-    <h2>{{ activity.name }}</h2>
-    <p>{{ activity.description }}</p>
-    <p>{{ activity.budget }} €</p>
-    <p>{{ activity.location }}</p>
-    <p>{{ activity.distance }} km</p>
-    <p>Category: {{ activity.category.name }}</p>
-    <p>Environment: {{ activity.environment }}</p>
-    {%  if activity.pet_friendly %}
-        <p>Pet-friendly</p>
-    {% else %}
-        <p> Not pet-friendly</p>
-    {% endif %}
-    <h3>Vibes</h3>
-    {% for vibe in activity.vibes.all %}
-        <p>{{ vibe.name }}</p>
-    {% empty %}
-        No vibes added.
-    {% endfor %}
-    <a href="{% url 'activity_edit' activity.pk %}">Edit Activity</a>
-    <a href="{% url 'activity_delete' activity.pk %}">Delete Activity</a>
+
+<section class="page-intro">
+    <span class="eyebrow">YOUR NEXT ADVENTURE</span>
+    <h1>{{ activity.name }}</h1>
+    <p>Everything you need to know before you go.</p>
+</section>
+
+<article class="activity-detail">
+
+    <div class="detail-image">
+        {% if activity.image %}
+            <img src="{{ activity.image.url }}" alt="{{ activity.name }}">
+        {% elif activity.default_image %}
+            <img src="{% static 'images/defaults/'|add:activity.default_image %}"
+                 alt="{{ activity.name }}">
+        {% else %}
+            <img src="{% static 'images/placeholder.jpg' %}"
+                 alt="{{ activity.name }}">
+        {% endif %}
+    </div>
+
+    <div class="detail-content">
+
+        <div class="detail-heading">
+            <span class="category-label">{{ activity.category.name }}</span>
+            <span class="budget-label">{{ activity.budget|budget_label }}</span>
+        </div>
+
+        <h2>About this adventure</h2>
+        <p class="detail-description">{{ activity.description }}</p>
+
+        <h2>At a glance</h2>
+
+        <div class="detail-info-grid">
+            <div class="detail-info-item">
+                <span class="detail-info-label">BUDGET</span>
+                <strong>€{{ activity.budget }}</strong>
+            </div>
+
+            <div class="detail-info-item">
+                <span class="detail-info-label">DISTANCE</span>
+                <strong>{{ activity.distance }} km</strong>
+            </div>
+
+            <div class="detail-info-item">
+                <span class="detail-info-label">LOCATION</span>
+                <strong>{{ activity.location }}</strong>
+            </div>
+
+            <div class="detail-info-item">
+                <span class="detail-info-label">ENVIRONMENT</span>
+                <strong>{{ activity.environment }}</strong>
+            </div>
+
+            <div class="detail-info-item">
+                <span class="detail-info-label">PETS</span>
+                {% if activity.pet_friendly %}
+                    <strong>🐶🐱 Pet-friendly</strong>
+                {% else %}
+                    <strong>🚫🐕Not pet-friendly</strong>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="detail-vibes">
+            <h2>✨ The Vibes</h2>
+
+            <div class="vibe-list">
+                {% for vibe in activity.vibes.all %}
+                    <span class="vibe-tag">{{ vibe.name }}</span>
+                {% empty %}
+                    <p>No vibes added yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="detail-actions">
+            <a href="{% url 'activities' %}" class="btn btn-secondary">
+                ← Back to Activities
+            </a>
+
+            <a href="{% url 'activity_edit' activity.pk %}" class="btn btn-primary">
+                Edit Activity
+            </a>
+
+            <a href="{% url 'activity_delete' activity.pk %}" class="btn btn-danger">
+                Delete Activity
+            </a>
+        </div>
+
+    </div>
+
+</article>
+
 {% endblock %}
