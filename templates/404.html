@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="error-page">
+        <h1>404 - OOOPS...Adventure Not Found.</h1>
+        <p>Looks like this plan took a wrong turn!</p>
+        <p>Let's get you back on track.</p>
+        <a href="{% url 'activities' %}">Explore Activities</a>
+    </section>
+{% endblock %}

@@ -1,6 +1,20 @@
 {% extends 'base.html' %}
+{% load activity_extras %}
 {% load static %}
 {% block content %}
+    
+    {% featured_activity as featured %}
+        <section class="featured-activity">
+            <h2>🌟 Featured Adventure</h2>
+            {% if featured %}
+                <h3>{{ featured.name }}</h3>
+                <p>Budget: €{{ featured.budget }} — {{ featured.budget|budget_label }}</p>
+                <p>Distance: {{ featured.distance }} km</p>
+            {% else %}
+                <p>No adventures yet. Create your first activity!</p>
+            {% endif %}
+        </section>
+
     <form method='get'>
     {{ form.as_p }}
     <button type="submit">Apply Filters</button>
